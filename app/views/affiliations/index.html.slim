@@ -1,0 +1,25 @@
+h1 Listing affiliations
+
+table
+  thead
+    tr
+      th Project
+      th User
+      th Administrator
+      th
+      th
+      th
+
+  tbody
+    - @affiliations.each do |affiliation|
+      tr
+        td = affiliation.project_id
+        td = affiliation.user_id
+        td = affiliation.administrator
+        td = link_to 'Show', affiliation
+        td = link_to 'Edit', edit_affiliation_path(affiliation)
+        td = link_to 'Destroy', affiliation, data: { confirm: 'Are you sure?' }, method: :delete
+
+br
+
+= link_to 'New Affiliation', new_affiliation_path

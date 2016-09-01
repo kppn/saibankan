@@ -1,0 +1,13 @@
+
+tr
+    td
+        - obj = t.instance_variable_get(:@object)
+        - type = obj.read_attribute(:type)
+
+        = t.text_field :format, :hide_label => true
+
+        = t.form_group do
+            = t.radio_button :type, 'FixedPart',      :checked => (type == 'FixedPart'),      :label => 'Fixed', inline: true
+            = t.radio_button :type, 'DatePart',       :checked => (type == 'DatePart'),       :label => 'Date',  inline: true
+            = t.radio_button :type, 'SequentialPart', :checked => (type == 'SequentialPart'), :label => 'Sequential', inline: true
+

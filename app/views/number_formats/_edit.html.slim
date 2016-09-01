@@ -1,0 +1,6 @@
+table.table-striped
+    = bootstrap_form_for @number_format do |f|
+        - @number_format.number_parts.each do |part|
+            tr
+                td
+                    = f.text_field :format, :value => part.format, hide_label: true

@@ -1,0 +1,25 @@
+h1 Listing marks
+
+table
+  thead
+    tr
+      th Owner
+      th Label
+      th Description
+      th
+      th
+      th
+
+  tbody
+    - @marks.each do |mark|
+      tr
+        td = mark.owner
+        td = mark.label
+        td = mark.description
+        td = link_to 'Show', mark
+        td = link_to 'Edit', edit_mark_path(mark)
+        td = link_to 'Destroy', mark, data: { confirm: 'Are you sure?' }, method: :delete
+
+br
+
+= link_to 'New Mark', new_mark_path

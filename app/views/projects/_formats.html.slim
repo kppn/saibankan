@@ -1,0 +1,14 @@
+table.table
+    - @project.number_formats.each.with_index do |number_format, i|
+        tr
+            td
+                = i
+            td.number_format
+                = number_format
+            td
+                = link_to '編集', number_format, :class => 'btn btn-primary btn-sm'
+
+sass:
+    .number_format
+        font-family: 'monospace'
+

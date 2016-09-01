@@ -1,0 +1,25 @@
+h1 Listing allocations
+
+table
+  thead
+    tr
+      th Project
+      th User
+      th Number
+      th
+      th
+      th
+
+  tbody
+    - @allocations.each do |allocation|
+      tr
+        td = allocation.project_id
+        td = allocation.user_id
+        td = allocation.number_id
+        td = link_to 'Show', allocation
+        td = link_to 'Edit', edit_allocation_path(allocation)
+        td = link_to 'Destroy', allocation, data: { confirm: 'Are you sure?' }, method: :delete
+
+br
+
+= link_to 'New Allocation', new_allocation_path

@@ -1,0 +1,1 @@
+json.partial! "number_formats/number_format", number_format: @number_format

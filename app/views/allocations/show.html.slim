@@ -1,0 +1,15 @@
+p#notice = notice
+
+p
+  strong Project:
+  = @allocation.project_id
+p
+  strong User:
+  = @allocation.user_id
+p
+  strong Number:
+  = @allocation.number_id
+
+= link_to 'Edit', edit_allocation_path(@allocation)
+'|
+= link_to 'Back', allocations_path

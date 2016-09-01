@@ -1,0 +1,18 @@
+= form_for @affiliation do |f|
+  - if @affiliation.errors.any?
+    #error_explanation
+      h2 = "#{pluralize(@affiliation.errors.count, "error")} prohibited this affiliation from being saved:"
+      ul
+        - @affiliation.errors.full_messages.each do |message|
+          li = message
+
+  .field
+    = f.label :project_id
+    = f.text_field :project_id
+  .field
+    = f.label :user_id
+    = f.text_field :user_id
+  .field
+    = f.label :administrator
+    = f.check_box :administrator
+  .actions = f.submit

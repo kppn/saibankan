@@ -1,0 +1,18 @@
+table.table
+    thead
+        tr
+            th Id
+            th 番号
+            th ユーザ
+            th 作成日時
+    tbody
+        - numbers.each do |number|
+            tr
+                td = number.id
+                td = number.val
+                td = number.users.first.email
+                td = number.created_at
+            tr
+                td
+                - number.marks.each do |mark|
+                    td = mark.label

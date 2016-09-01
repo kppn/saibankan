@@ -1,0 +1,23 @@
+h1 Listing numbers
+
+table
+  thead
+    tr
+      th Allocated
+      th Project
+      th
+      th
+      th
+
+  tbody
+    - @numbers.each do |number|
+      tr
+        td = number.allocated
+        td = number.project_id
+        td = link_to 'Show', number
+        td = link_to 'Edit', edit_number_path(number)
+        td = link_to 'Destroy', number, data: { confirm: 'Are you sure?' }, method: :delete
+
+br
+
+= link_to 'New Number', new_number_path

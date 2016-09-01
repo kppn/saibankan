@@ -1,0 +1,27 @@
+h1 Listing number_parts
+
+table
+  thead
+    tr
+      th Type
+      th Format
+      th Number part
+      th Current
+      th
+      th
+      th
+
+  tbody
+    - @number_parts.each do |number_part|
+      tr
+        td = number_part.type
+        td = number_part.format
+        td = number_part.number_part_id
+        td = number_part.current
+        td = link_to 'Show', number_part
+        td = link_to 'Edit', edit_number_part_path(number_part)
+        td = link_to 'Destroy', number_part, data: { confirm: 'Are you sure?' }, method: :delete
+
+br
+
+= link_to 'New Number part', new_number_part_path

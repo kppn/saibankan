@@ -1,0 +1,18 @@
+= form_for @allocation do |f|
+  - if @allocation.errors.any?
+    #error_explanation
+      h2 = "#{pluralize(@allocation.errors.count, "error")} prohibited this allocation from being saved:"
+      ul
+        - @allocation.errors.full_messages.each do |message|
+          li = message
+
+  .field
+    = f.label :project_id
+    = f.text_field :project_id
+  .field
+    = f.label :user_id
+    = f.text_field :user_id
+  .field
+    = f.label :number_id
+    = f.text_field :number_id
+  .actions = f.submit
