@@ -4,8 +4,6 @@ class CreateMarks < ActiveRecord::Migration
       t.integer :owner_id
       t.string  :owner_type
 
-      t.references :marking
-
       t.string :label
       t.string :description
 

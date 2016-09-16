@@ -1,21 +1,17 @@
-h1 Listing number_formats
+h1 番号フォーマット
 
-table
-  thead
-    tr
-      th Project
-      th
-      th
-      th
+table.table
+      thead
+            tr
+                  th Project
+                  th 番号フォーマット
 
-  tbody
-    - @number_formats.each do |number_format|
-      tr
-        td = number_format.project_id
-        td = link_to 'Show', number_format
-        td = link_to 'Edit', edit_number_format_path(number_format)
-        td = link_to 'Destroy', number_format, data: { confirm: 'Are you sure?' }, method: :delete
+      tbody
+            - @number_formats.each do |number_format|
+                  tr
+                        td = number_format.project_id
+                        td = number_format.format
 
-br
 
-= link_to 'New Number format', new_number_format_path
+= link_to '戻る', project_path(@number_formats.first.project), :class => 'btn btn-primary'
+

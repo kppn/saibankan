@@ -1,8 +1,10 @@
 h1 番号フォーマット編集
 
-== render 'form'
+.row
+    .col-md-12
+        == render 'form'
 
-= link_to 'Show', @number_format
-'|
-= link_to 'Back', number_formats_path
+.row
+    .col-md-1
+        = link_to '戻る', project_path(@project), :class => 'btn btn-primary'
 

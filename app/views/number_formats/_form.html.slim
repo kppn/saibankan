@@ -1,9 +1,9 @@
 
-table.table-striped
-    = bootstrap_form_for @number_format, layout: :horizontal do |f|
+= bootstrap_form_for [@project, @number_format], layout: :horizontal do |f|
+    table.table-striped
         = f.fields_for :number_parts, layout: :horizontal do |t|
             = render partial: 'part', locals: {t: t}
 
-        .actions
-            = f.primary '決定', :class => 'btn btn-primary'
+    .actions
+        = f.primary '決定', :class => 'btn btn-primary'
 

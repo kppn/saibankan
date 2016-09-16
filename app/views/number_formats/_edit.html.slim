@@ -1,5 +1,5 @@
 table.table-striped
-    = bootstrap_form_for @number_format do |f|
+    = bootstrap_form_for [@project, @number_format] do |f|
         - @number_format.number_parts.each do |part|
             tr
                 td

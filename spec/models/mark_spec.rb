@@ -1,3 +1,16 @@
+# == Schema Information
+#
+# Table name: marks
+#
+#  id          :integer          not null, primary key
+#  owner_id    :integer
+#  owner_type  :string
+#  label       :string
+#  description :string
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#
+
 require 'rails_helper'
 
 RSpec.describe Mark, type: :model do

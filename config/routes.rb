@@ -7,19 +7,23 @@ Rails.application.routes.draw do
     :registrations => "devise_custom/registrations",
     :passwords     => "devise_custom/passwords",
   }
-  get 'users/home'     => 'users#home'
 
+  namespace :users do
+    #get 'users/home'     => 'users#home'
+    get 'home'
+    resources :affiliations, only: [:create, :edit, :destroy]
+  end
 
-  # resources :tops
-  resources :allocations
-  resources :number_formats
-  resources :numbers
-  resources :marks
-  resources :number_parts
-  resources :affiliations
-  resources :projects
-  resources :templates
-  #devise_for :users
+  resources :markings, only: [:create]
+  resources :marks, only: [:index, :new, :show, :edit, :create, :destroy]
+
+  resources :projects do
+    # resources :allocations # no use for user input
+    resources :numbers, only: [:index, :create], shallow: true
+    resources :number_formats do
+      resources :number_parts
+    end
+  end
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

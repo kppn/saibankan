@@ -1,3 +1,13 @@
+# == Schema Information
+#
+# Table name: number_formats
+#
+#  id         :integer          not null, primary key
+#  project_id :integer
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+
 require 'rails_helper'
 
 RSpec.describe NumberFormat, type: :model do

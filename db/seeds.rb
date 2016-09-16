@@ -36,7 +36,7 @@ ActiveRecord::Base.connection.execute(%q( delete from sqlite_sequence where name
 
 user = User.create(email: 'ta_kondoh@actis.co.jp', password: 'Kppnn3')
 
-project1 = Project.create(name: 'project name test01', description: 'project description test01')
+project1 = Project.create(name: 'popa', description: 'project description test01')
 number_format1 = NumberFormat.create(project_id: project1.id)
 date_part = DatePart.create(number_format_id: number_format1.id,       format: '%Y%m%d')
 fixed_part = FixedPart.create(number_format_id: number_format1.id,      format: 'hoge')
@@ -47,10 +47,11 @@ number2 = project1.numbers.create(val: '20160831hoge002')
 user.numbers << number1
 user.numbers << number2
 
-marking1 = number1.markings.create
-marking2 = number1.markings.create
-mark1 = marking1.create_mark(owner_id: user.id,     owner_type: 'User',    label: 'mark test01', description: 'mark description test01')
-mark2 = marking2.create_mark(owner_id: project1.id, owner_type: 'Project', label: 'mark test01', description: 'mark description test02')
-
+#marking1 = number1.markings.create
+#marking2 = number1.markings.create
+#mark1 = marking1.create_mark(owner_id: user.id,     owner_type: 'User',    label: 'mark test01', description: 'mark description test01')
+#mark2 = marking2.create_mark(owner_id: project1.id, owner_type: 'Project', label: 'mark test01', description: 'mark description test02')
+mark1 = number1.marks.create(owner_id: user.id,     owner_type: 'User',    label: 'mark test01', description: 'mark description test01')
+mark2 = number2.marks.create(owner_id: project1.id, owner_type: 'Project', label: 'mark test01', description: 'mark description test02')
 
 

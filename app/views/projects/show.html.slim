@@ -1,22 +1,41 @@
 
 h1
-    | プロジェクト 
     = @project.name
-    div = @project.description
+.row
+    .col-md-12.project_description
+        = @project.description
 
+h3 番号フォーマット
 .row
     .col-md-12
-        | 採番フォーマット
-    .col-md-12
-        = render partial: 'formats', locals: {formats: @project.number_formats}
-.row
-    .col-md-12
-        = link_to '採番', '/numbers/new', :class => 'btn btn-primary btn-sm'
-.row
-    .col-md-12
-        | 最近の採番
-    .col-md-12
-        = render partial: 'numbers', locals: {numbers: @project.numbers.last(10).reverse}
+        - if @project.number_formats.blank?
+            = render partial: 'formats_blank', locals: {project: @project}
+        - else
+            = render partial: 'formats', locals: {formats: @project.number_formats}
 
-= link_to 'Back', users_home_path
+h3 採番する
+.row
+    .col-md-12
+        - if @project.number_formats.blank?
+            = render partial: 'allocation_blank'
+        - else
+            = render partial: 'allocation', locals: {project: @project, marks: @marks}
+
+h3 最近の採番
+= link_to '全て見る', project_numbers_path(@project), :class => 'btn btn-primary'
+.row
+    .col-md-12
+        = render partial: 'common/numbers', locals: {numbers: @project.numbers.last(4).reverse}
+
+= link_to '戻る', users_home_path, :class => 'btn btn-primary'
+
+
+sass:
+    .project_description
+        font-size: 1.5em
+        border: solid 2px
+        border-radius: 4px
+        border-color: #a0a0a0
+        background-color: #e0e0e0
+        padding: 8px
 

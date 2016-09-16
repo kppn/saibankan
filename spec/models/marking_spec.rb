@@ -1,3 +1,14 @@
+# == Schema Information
+#
+# Table name: markings
+#
+#  id         :integer          not null, primary key
+#  number_id  :integer
+#  mark_id    :integer
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+
 require 'rails_helper'
 
 RSpec.describe Marking, type: :model do

@@ -14,16 +14,32 @@
                             .row
                                 .col-md-5
                                     = project.name
-                                - if @user.projects.include? project
-                                    .col-md-1
-                                        = link_to '採番', project, :class => 'btn btn-primary btn-sm'
-                                    .col-md-1
-                                        = link_to '設定', project, :class => 'btn btn-primary btn-sm'
-                                - else
-                                    - affiliation = project.affiliations.build
-                                    = form_for affiliation do |f|
-                                         = f.hidden_field :project_id
-                                         = f.hidden_field :user_id, :value => @user.id
-                                         = f.submit '参加', :class => 'btn btn-primary btn-sm'
+                                .col-md-7
+                                    - if @user.projects.include? project
+                                        - affiliation = @user.affiliations.find_by(project_id: project.id)
+                                        = link_to '所属解除', ['users', affiliation], method: :delete, :class => 'btn btn-primary btn-sm'
+                                        = link_to '採番/設定', project, :class => 'btn btn-primary btn-sm'
+                                    - else
+                                        - affiliation = project.affiliations.build
+                                        = bootstrap_form_for ['users', affiliation], class: 'inline-block' do |f|
+                                            = f.hidden_field :project_id
+                                            = f.hidden_field :user_id, :value => @user.id
+                                            = f.submit '所属', :class => 'btn btn-primary btn-sm'
 
+.row
+    .col-md-12
+        = link_to 'マーク設定', marks_path, :class => 'btn btn-primary btn-sm'
+.row
+    .col-md-12
+        = link_to '新規プロジェクト', new_project_path, :class => 'btn btn-primary btn-sm'
 
+sass:
+    .new_affiliation
+        display: inline
+        margin-left: 4px
+        margin-right: 4px
+
+    .btn
+        margin-left: 4px
+        margin-right: 4px
+        

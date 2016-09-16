@@ -1,25 +1,52 @@
-h1 Listing marks
+h1 マーク
 
-table
+h2 個人マーク
+table.table
   thead
     tr
-      th Owner
       th Label
       th Description
+      th
+      th 利用数
+      th
+      th
+
+  tbody
+    - @user_marks.each do |mark|
+      tr
+        td = mark.label
+        td = mark.description
+        td = 
+        td = mark.markings.count
+        td = link_to 'Edit', edit_mark_path(mark), :class => 'btn btn-primary btn-sm'
+        td = link_to 'Destroy', mark, data: { confirm: 'Are you sure?' }, method: :delete, :class => 'btn btn-primary btn-sm'
+
+h2 プロジェクトマーク
+table.table
+  thead
+    tr
+      th Label
+      th Description
+      th Project
+      th 利用数
       th
       th
       th
 
   tbody
-    - @marks.each do |mark|
+    - @project_marks.each do |mark|
       tr
-        td = mark.owner
         td = mark.label
         td = mark.description
-        td = link_to 'Show', mark
-        td = link_to 'Edit', edit_mark_path(mark)
-        td = link_to 'Destroy', mark, data: { confirm: 'Are you sure?' }, method: :delete
+        td = mark.owner.name
+        td = mark.markings.count
+        td = link_to 'Edit', edit_mark_path(mark), :class => 'btn btn-primary btn-sm'
+        td = link_to 'Destroy', mark, data: { confirm: 'Are you sure?' }, method: :delete, :class => 'btn btn-primary btn-sm'
 
 br
 
-= link_to 'New Mark', new_mark_path
+.row
+    .col-md-12 = link_to '新規作成', new_mark_path, :class => 'btn btn-primary'
+.row
+    .col-md-12 = link_to '戻る', users_home_path, :class => 'btn btn-primary'
+

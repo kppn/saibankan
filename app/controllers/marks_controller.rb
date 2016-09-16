@@ -4,7 +4,8 @@ class MarksController < ApplicationController
   # GET /marks
   # GET /marks.json
   def index
-    @marks = Mark.all
+    @user_marks    = @user.marks
+    @project_marks = @user.projects.map{|p| p.marks}.inject{|s, marks| s + marks}
   end
 
   # GET /marks/1
@@ -24,11 +25,18 @@ class MarksController < ApplicationController
   # POST /marks
   # POST /marks.json
   def create
-    @mark = Mark.new(mark_params)
+    @mark = Mark.new
+    if mark_params[:owner] == 'User'
+      @mark.owner = @user
+    else
+      @mark.owner = Project.find mark_params[:owner]
+    end
+    @mark.label = mark_params[:label]
+    @mark.description = mark_params[:description]
 
     respond_to do |format|
       if @mark.save
-        format.html { redirect_to @mark, notice: 'Mark was successfully created.' }
+        format.html { redirect_to :action => 'index' }
         format.json { render :show, status: :created, location: @mark }
       else
         format.html { render :new }

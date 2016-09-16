@@ -1,12 +1,10 @@
 table.table
-    - @project.number_formats.each.with_index do |number_format, i|
+    - @project.number_formats.each do |number_format|
         tr
-            td
-                = i
             td.number_format
-                = number_format
+                = number_format.format
             td
-                = link_to '編集', number_format, :class => 'btn btn-primary btn-sm'
+                = link_to '編集', edit_project_number_format_path(@project, number_format), :class => 'btn btn-primary btn-sm'
 
 sass:
     .number_format

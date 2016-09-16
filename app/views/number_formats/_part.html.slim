@@ -4,7 +4,7 @@ tr
         - obj = t.instance_variable_get(:@object)
         - type = obj.read_attribute(:type)
 
-        = t.text_field :format, :hide_label => true
+        = t.text_field :format, :hide_label => true, inline: true
 
         = t.form_group do
             = t.radio_button :type, 'FixedPart',      :checked => (type == 'FixedPart'),      :label => 'Fixed', inline: true

@@ -30,6 +30,7 @@ ActiveRecord::Schema.define(version: 20160830055709) do
 
   create_table "markings", force: :cascade do |t|
     t.integer  "number_id"
+    t.integer  "mark_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -37,7 +38,6 @@ ActiveRecord::Schema.define(version: 20160830055709) do
   create_table "marks", force: :cascade do |t|
     t.integer  "owner_id"
     t.string   "owner_type"
-    t.integer  "marking_id"
     t.string   "label"
     t.string   "description"
     t.datetime "created_at",  null: false

@@ -1,10 +1,11 @@
 class NumbersController < ApplicationController
   before_action :set_number, only: [:show, :edit, :update, :destroy]
+  before_action :set_project, only: [:index]
 
   # GET /numbers
   # GET /numbers.json
   def index
-    @numbers = Number.all
+    @numbers = @project.numbers
   end
 
   # GET /numbers/1
@@ -24,11 +25,18 @@ class NumbersController < ApplicationController
   # POST /numbers
   # POST /numbers.json
   def create
-    @number = Number.new(number_params)
+    @project = Project.find(params[:project_id])
+    @number = @project.numbers.build
+
+    @number.val = allocate_number(@project)
+    @number.users << @user
+
+    mark_ids = params[:number] && params[:number][:mark_ids] || []
+    relate_marks @number, mark_ids
 
     respond_to do |format|
       if @number.save
-        format.html { redirect_to @number, notice: 'Number was successfully created.' }
+        format.html { redirect_to project_path(@project) }
         format.json { render :show, status: :created, location: @number }
       else
         format.html { render :new }
@@ -67,8 +75,23 @@ class NumbersController < ApplicationController
       @number = Number.find(params[:id])
     end
 
+    def set_project
+      @project = Project.find params[:project_id]
+    end
+
     # Never trust parameters from the scary internet, only allow the white list through.
     def number_params
-      params.require(:number).permit(:allocated, :project_id)
+      params.require(:number).permit(:allocated, :project_id, :mark_ids)
+    end
+
+    def allocate_number project
+      number_format = project.number_formats.first
+      number_format.build
+    end
+
+    def relate_marks number, mark_ids
+      mark_ids.each do |mark_id|
+        number.marks << Mark.find(mark_id)
+      end
     end
 end

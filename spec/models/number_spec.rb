@@ -1,3 +1,14 @@
+# == Schema Information
+#
+# Table name: numbers
+#
+#  id         :integer          not null, primary key
+#  project_id :integer
+#  val        :string
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+
 require 'rails_helper'
 
 RSpec.describe Number, type: :model do
