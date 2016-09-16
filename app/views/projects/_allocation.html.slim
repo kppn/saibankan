@@ -1,0 +1,14 @@
+= bootstrap_form_for [project, Number.new] do |f|
+    .col-md-12
+        = f.submit '採番', :class => 'btn btn-primary btn-sm'
+    .col-md-12
+        table.table
+            = f.form_group do
+                - marks.each do |mark|
+                    tr
+                        td
+                            = check_box_tag 'number[mark_ids][]', mark.id
+                        td
+                            = mark.label
+                        td
+                            = mark.description

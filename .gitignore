@@ -15,3 +15,7 @@
 /log/*
 !/log/.keep
 /tmp
+
+# Ignore assets that rails makes
+public/assets/*
+
