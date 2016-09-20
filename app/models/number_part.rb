@@ -16,7 +16,7 @@ class NumberPart < ActiveRecord::Base
 
   attr_accessor :type
 
-  def build
+  def build(binder)
     ''
   end
 

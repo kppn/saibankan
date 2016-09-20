@@ -28,7 +28,7 @@ class NumbersController < ApplicationController
     @project = Project.find(params[:project_id])
     @number = @project.numbers.build
 
-    @number.val = allocate_number(@project)
+    @number.val = allocate_number(@project, @user)
     @number.users << @user
 
     mark_ids = params[:number] && params[:number][:mark_ids] || []
@@ -84,9 +84,9 @@ class NumbersController < ApplicationController
       params.require(:number).permit(:allocated, :project_id, :mark_ids)
     end
 
-    def allocate_number project
+    def allocate_number project, user
       number_format = project.number_formats.first
-      number_format.build
+      number_format.build binding
     end
 
     def relate_marks number, mark_ids

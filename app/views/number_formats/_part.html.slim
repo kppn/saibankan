@@ -4,10 +4,13 @@ tr
         - obj = t.instance_variable_get(:@object)
         - type = obj.read_attribute(:type)
 
-        = t.text_field :format, :hide_label => true, inline: true
-
-        = t.form_group do
-            = t.radio_button :type, 'FixedPart',      :checked => (type == 'FixedPart'),      :label => 'Fixed', inline: true
-            = t.radio_button :type, 'DatePart',       :checked => (type == 'DatePart'),       :label => 'Date',  inline: true
-            = t.radio_button :type, 'SequentialPart', :checked => (type == 'SequentialPart'), :label => 'Sequential', inline: true
+        .row
+            .col-md-12
+                = t.text_field :format, :hide_label => true, inline: true
+            .col-md-12
+                = t.form_group do
+                    = t.radio_button :type, 'FixedPart',      :checked => (type == 'FixedPart'),      :label => 'Fixed',      inline: true
+                    = t.radio_button :type, 'DatePart',       :checked => (type == 'DatePart'),       :label => 'Date',       inline: true
+                    = t.radio_button :type, 'SequentialPart', :checked => (type == 'SequentialPart'), :label => 'Sequential', inline: true
+                    = t.radio_button :type, 'RubyPart',       :checked => (type == 'RubyPart'),       :label => 'Ruby',       inline: true
 

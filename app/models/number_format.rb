@@ -14,7 +14,7 @@ class NumberFormat < ActiveRecord::Base
 
   accepts_nested_attributes_for :number_parts
 
-  def build
-    number_parts.map(&:build).inject(&:+)
+  def build binder
+    number_parts.map{|np| np.build(binder)}.inject(&:+)
   end
 end

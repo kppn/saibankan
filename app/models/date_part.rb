@@ -14,7 +14,7 @@
 class DatePart < NumberPart
   after_save :reset_current
 
-  def build
+  def build(binder)
     Time.zone.now.strftime format
   end
 

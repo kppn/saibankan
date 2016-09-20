@@ -14,7 +14,7 @@
 class SequentialPart < NumberPart
   after_save :reset_current
 
-  def build
+  def build(binder)
     num = format % current
     increment! :current
     num

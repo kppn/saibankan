@@ -11,11 +11,11 @@
 #  updated_at       :datetime         not null
 #
 
-class FixedPart < NumberPart
+class RubyPart < NumberPart
   after_save :reset_current
 
   def build(binder)
-    format
+    binder.eval format
   end
 
   private
