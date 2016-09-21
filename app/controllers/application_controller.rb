@@ -27,7 +27,7 @@ class ApplicationController < ActionController::Base
     end
 
     def project_name_tilte
-      id = if self.class.kind_of? ProjectsController
+      id = if self.kind_of? ProjectsController
              params[:id]
            else
              params[:project_id]
