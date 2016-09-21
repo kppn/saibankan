@@ -39,7 +39,7 @@ class Api::V1::NumbersController < Api::V1Controller
     end
     
     def set_project
-      @project = Project.find_by(name: params[:project_name])
+      @project = Project.find_by!(name: params[:project_name])
     end
 
     def marking(number, user, mark_params)
