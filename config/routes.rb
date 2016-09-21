@@ -25,7 +25,7 @@ Rails.application.routes.draw do
     resources :number_formats, only: [:show, :new, :create, :edit, :update]
   end
 
-  namespace 'api' do
+  namespace 'api', constraints: lambda{ |request| request.format == :json } do
     namespace 'v1' do
       resources 'projects', only: [], param: :name, constraints: { name: /.*/ }  do
         resources :numbers, only: [:create]
