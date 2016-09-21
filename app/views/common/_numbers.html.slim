@@ -18,27 +18,11 @@ table.table.table-borderless
                     - number.marks.each do |mark|
                         p.inline.marker
                             = mark.label
+                td
+                    = link_to 'マーク編集', project_number_markings_path(@project, number), :class => 'btn btn-info btn-xs'
 
 sass:
     .table-borderless tbody tr, .table-borderless tbody tr td
         border-top: none
         border-bottom: none
-
-    .marker
-        float:left
-        display: inline
-
-        padding: 2px
-        margin-left: 2px
-        margin-right: 2px
-
-        font-size: 0.8em
-
-        border: solid 1px
-        border-radius: 4px
-        border-color: #a0a0a0
-
-        background: #d0d0d0
-
-
 

@@ -1,25 +1,6 @@
 class AllocationsController < ApplicationController
-  before_action :set_allocation, only: [:show, :edit, :update, :destroy]
+  before_action :set_allocation, only: [:update, :destroy]
 
-  # GET /allocations
-  # GET /allocations.json
-  def index
-    @allocations = Allocation.all
-  end
-
-  # GET /allocations/1
-  # GET /allocations/1.json
-  def show
-  end
-
-  # GET /allocations/new
-  def new
-    @allocation = Allocation.new
-  end
-
-  # GET /allocations/1/edit
-  def edit
-  end
 
   # POST /allocations
   # POST /allocations.json

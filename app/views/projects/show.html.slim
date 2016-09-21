@@ -5,6 +5,10 @@ h1
     .col-md-12.project_description
         = @project.description
 
+.row
+    .col-md-12
+        = link_to '編集', edit_project_path(@project), :class => 'btn btn-primary btn-sm'
+        
 h3 番号フォーマット
 .row
     .col-md-12

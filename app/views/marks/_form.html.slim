@@ -4,12 +4,13 @@
     .field
         = f.text_field :description
 
-    = f.form_group do
-        .field
-            = f.radio_button     :owner,    'User',        :checked => true,      :label => 'ユーザ所有', inline: true
-        - @user.projects.each do |project|
+    - if controller.action_name == 'new'
+        = f.form_group do
             .field
-                = f.radio_button :owner,    project.id,     :checked => false,     :label => project.name, inline: true
+                = f.radio_button     :owner,    'User',        :checked => true,      :label => 'ユーザ所有', inline: true
+            - @user.projects.each do |project|
+                .field
+                    = f.radio_button :owner,    project.id,     :checked => false,     :label => project.name, inline: true
 
-    .actions = f.submit '新規作成', :class => 'btn btn-primary'
+    .actions = f.submit '作成', :class => 'btn btn-primary'
 

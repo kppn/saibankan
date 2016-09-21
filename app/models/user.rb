@@ -23,9 +23,10 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  has_many :affiliations
+  has_many :affiliations, dependent: :destroy
   has_many :projects, through: :affiliations
   has_many :allocations
-  has_many :numbers, through: :allocations
-  has_many :marks, as: :owner
+  has_many :numbers, through: :allocations, dependent: :destroy
+  has_many :marks, as: :owner, dependent: :destroy
+
 end

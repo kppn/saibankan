@@ -1,16 +1,11 @@
 class MarksController < ApplicationController
-  before_action :set_mark, only: [:show, :edit, :update, :destroy]
+  before_action :set_mark, only: [:edit, :update, :destroy]
 
   # GET /marks
   # GET /marks.json
   def index
     @user_marks    = @user.marks
     @project_marks = @user.projects.map{|p| p.marks}.inject{|s, marks| s + marks}
-  end
-
-  # GET /marks/1
-  # GET /marks/1.json
-  def show
   end
 
   # GET /marks/new
@@ -50,7 +45,7 @@ class MarksController < ApplicationController
   def update
     respond_to do |format|
       if @mark.update(mark_params)
-        format.html { redirect_to @mark, notice: 'Mark was successfully updated.' }
+        format.html { redirect_to :action => "index" }
         format.json { render :show, status: :ok, location: @mark }
       else
         format.html { render :edit }

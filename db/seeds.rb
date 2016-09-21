@@ -14,6 +14,7 @@ Affiliation.delete_all
 Allocation.delete_all
 Number.delete_all
 Mark.delete_all
+Marking.delete_all
 NumberFormat.delete_all
 NumberPart.delete_all
 DatePart.delete_all
@@ -52,6 +53,6 @@ user.numbers << number2
 #mark1 = marking1.create_mark(owner_id: user.id,     owner_type: 'User',    label: 'mark test01', description: 'mark description test01')
 #mark2 = marking2.create_mark(owner_id: project1.id, owner_type: 'Project', label: 'mark test01', description: 'mark description test02')
 mark1 = number1.marks.create(owner_id: user.id,     owner_type: 'User',    label: 'mark test01', description: 'mark description test01')
-mark2 = number2.marks.create(owner_id: project1.id, owner_type: 'Project', label: 'mark test01', description: 'mark description test02')
+mark2 = number2.marks.create(owner_id: project1.id, owner_type: 'Project', label: 'mark test02', description: 'mark description test02')
 
 

@@ -9,6 +9,7 @@
                         td
                             = check_box_tag 'number[mark_ids][]', mark.id
                         td
-                            = mark.label
+                            p.inline.marker
+                                = mark.label
                         td
                             = mark.description

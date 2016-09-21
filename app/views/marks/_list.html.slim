@@ -1,0 +1,21 @@
+table.table
+  thead
+    tr
+      th Label
+      th Description
+      th
+      th 利用数
+      th
+      th
+
+  tbody
+    - marks.each do |mark|
+      tr
+        td
+            p.inline.marker
+                = mark.label
+        td = mark.description
+        td = 
+        td = mark.markings.count
+        td = link_to 'Edit', edit_mark_path(mark), :class => 'btn btn-primary btn-sm'
+        td = link_to 'Destroy', mark, data: { confirm: 'Are you sure?' }, method: :delete, :class => 'btn btn-primary btn-sm'

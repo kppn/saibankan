@@ -11,17 +11,25 @@ Rails.application.routes.draw do
   namespace :users do
     #get 'users/home'     => 'users#home'
     get 'home'
-    resources :affiliations, only: [:create, :edit, :destroy]
+    resources :affiliations, only: [:create, :destroy]
   end
 
-  resources :markings, only: [:create]
-  resources :marks, only: [:index, :new, :show, :edit, :create, :destroy]
+  # resources :markings, only: [:create]
+  resources :marks, only: [:index, :new, :create, :edit, :update, :destroy]
 
-  resources :projects do
+  resources :projects, only: [:show, :new, :create, :edit, :update] do
     # resources :allocations # no use for user input
-    resources :numbers, only: [:index, :create], shallow: true
-    resources :number_formats do
-      resources :number_parts
+    resources :numbers, only: [:index, :create] do
+      resources :markings, only: [:index, :create]
+    end
+    resources :number_formats, only: [:show, :new, :create, :edit, :update]
+  end
+
+  namespace 'api' do
+    namespace 'v1' do
+      resources 'projects', only: [], param: :name, constraints: { name: /.*/ }  do
+        resources :numbers, only: [:create]
+      end
     end
   end
 

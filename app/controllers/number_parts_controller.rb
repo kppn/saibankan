@@ -1,25 +1,6 @@
 class NumberPartsController < ApplicationController
-  before_action :set_number_part, only: [:show, :edit, :update, :destroy]
+  before_action :set_number_part, only: [:edit, :update]
 
-  # GET /number_parts
-  # GET /number_parts.json
-  def index
-    @number_parts = NumberPart.all
-  end
-
-  # GET /number_parts/1
-  # GET /number_parts/1.json
-  def show
-  end
-
-  # GET /number_parts/new
-  def new
-    @number_part = NumberPart.new
-  end
-
-  # GET /number_parts/1/edit
-  def edit
-  end
 
   # POST /number_parts
   # POST /number_parts.json
@@ -51,15 +32,6 @@ class NumberPartsController < ApplicationController
     end
   end
 
-  # DELETE /number_parts/1
-  # DELETE /number_parts/1.json
-  def destroy
-    @number_part.destroy
-    respond_to do |format|
-      format.html { redirect_to number_parts_url, notice: 'Number part was successfully destroyed.' }
-      format.json { head :no_content }
-    end
-  end
 
   private
     # Use callbacks to share common setup or constraints between actions.

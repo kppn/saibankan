@@ -1,17 +1,7 @@
 class NumberFormatsController < ApplicationController
-  before_action :set_number_format, only: [:show, :edit, :update, :destroy]
+  before_action :set_number_format, only: [:edit, :update]
   before_action :set_project, only: [:new, :create]
 
-  # GET /number_formats
-  # GET /number_formats.json
-  def index
-    @number_formats = NumberFormat.all
-  end
-
-  # GET /number_formats/1
-  # GET /number_formats/1.json
-  def show
-  end
 
   # GET /number_formats/new
   def new
@@ -71,16 +61,6 @@ class NumberFormatsController < ApplicationController
         format.html { render :edit }
         format.json { render json: @number_format.errors, status: :unprocessable_entity }
       end
-    end
-  end
-
-  # DELETE /number_formats/1
-  # DELETE /number_formats/1.json
-  def destroy
-    @number_format.destroy
-    respond_to do |format|
-      format.html { redirect_to number_formats_url, notice: 'Number format was successfully destroyed.' }
-      format.json { head :no_content }
     end
   end
 

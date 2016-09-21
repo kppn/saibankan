@@ -1,0 +1,32 @@
+
+.row
+    .col-md-12
+        table.table
+            tr
+                td = @number.id
+                td = @number.val
+                td = @number.users.first.email
+                td = @number.created_at_shorform
+        
+.row
+    .col-md-12
+        = bootstrap_form_for [@project, @number, Marking.new] do |f|
+            = f.form_group do |t|
+                - marks = @number.markings.map(&:mark)
+                - @all_marks.each do |mark|
+                    .row
+                        .col-md-1
+                            - checked = marks.include?(mark)
+                            = check_box_tag 'markings[mark_ids][]', mark.id, checked = checked
+                        .col-md-2
+                            p.inline.marker
+                                = mark.label
+                        .col-md-5
+                            = mark.description
+                .row
+                    .col-md-12
+                        = f.submit '設定', :class => 'btn btn-primary'
+
+.row
+    .col-md-12
+        = link_to '戻る', project_path(@project), :class => 'btn btn-primary'

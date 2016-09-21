@@ -26,8 +26,10 @@ html
                 .container-fluid
                     .navbar-header
                         .navbar-brand
-                            = link_to '採番管', root_path
+                            = link_to "採番管", root_path
                     .navbar-collapse.collapse
+                        p.project_name_tilte.navbar-text
+                            = @project_name_tilte
                         ul#navbar-list-menu.nav.navbar-nav.navbar-right
                             - if user_signed_in?
                                 li
@@ -60,3 +62,10 @@ sass:
 
     .row
         margin-top: 15px
+
+    .project_name_tilte
+        font-size: 1.5em
+        font-weight: bold
+        -webkit-text-stroke-color: #ffffff
+        -webkit-text-stroke-width: 1px
+

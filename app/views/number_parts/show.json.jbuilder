@@ -1,1 +1,0 @@
-json.partial! "number_parts/number_part", number_part: @number_part

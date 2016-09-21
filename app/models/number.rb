@@ -13,7 +13,7 @@ class Number < ActiveRecord::Base
   belongs_to :project
   has_many :allocations
   has_many :users, through: :allocations
-  has_many :markings
+  has_many :markings, dependent: :destroy
   has_many :marks, through: :markings
 
   validates :val, :project_id, presence: true

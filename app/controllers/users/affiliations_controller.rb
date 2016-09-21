@@ -1,25 +1,5 @@
 class Users::AffiliationsController < ApplicationController
-  before_action :set_affiliation, only: [:show, :edit, :update, :destroy]
-
-  # GET /affiliations
-  # GET /affiliations.json
-  def index
-    @affiliations = Affiliation.all
-  end
-
-  # GET /affiliations/1
-  # GET /affiliations/1.json
-  def show
-  end
-
-  # GET /affiliations/new
-  def new
-    @affiliation = Affiliation.new
-  end
-
-  # GET /affiliations/1/edit
-  def edit
-  end
+  before_action :set_affiliation, only: [:destroy]
 
   # POST /affiliations
   # POST /affiliations.json
@@ -33,20 +13,6 @@ class Users::AffiliationsController < ApplicationController
       else
         format.html { redirect_to :back }
         #format.json { render json: @affiliation.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # PATCH/PUT /affiliations/1
-  # PATCH/PUT /affiliations/1.json
-  def update
-    respond_to do |format|
-      if @affiliation.update(affiliation_params)
-        format.html { redirect_to @affiliation, notice: 'Affiliation was successfully updated.' }
-        format.json { render :show, status: :ok, location: @affiliation }
-      else
-        format.html { render :edit }
-        format.json { render json: @affiliation.errors, status: :unprocessable_entity }
       end
     end
   end
