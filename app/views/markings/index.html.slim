@@ -17,7 +17,7 @@
                     .row
                         .col-md-1
                             - checked = marks.include?(mark)
-                            = check_box_tag 'markings[mark_ids][]', mark.id, checked = checked
+                            = check_box_tag 'markings[mark_ids][]', mark.id, checked = checked, id: "markings_mark_ids_#{mark.id}", class: 'marking_checkbox'
                         .col-md-2
                             p.inline.marker
                                 = mark.label
@@ -25,8 +25,23 @@
                             = mark.description
                 .row
                     .col-md-12
-                        = f.submit '設定', :class => 'btn btn-primary'
+                        = f.submit '設定', id: 'submit', :class => 'btn btn-primary'
 
 .row
     .col-md-12
         = link_to '戻る', project_path(@project), :class => 'btn btn-primary'
+
+opal:
+    require 'opal-jquery'
+
+    Document.ready? do
+      CheckboxDifferenceHiddenAppender.new do
+        selector  '.marking_checkbox'
+        id_to_val /([0-9]+)$/
+        target    '#new_marking'
+        timing    '#submit', :click
+        name_add  'markings[add_mark_ids][]'
+        name_sub  'markings[sub_mark_ids][]'
+      end
+    end
+

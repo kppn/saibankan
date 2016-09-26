@@ -11,11 +11,11 @@ class MarkingsController < ApplicationController
   # POST /markings
   # POST /markings.json
   def create
-    Rails.logger.debug marking_params
-    target_ids = marking_params['mark_ids'].map(&:to_i)
+    add_mark_ids = marking_params['add_mark_ids']&.map(&:to_i) || []
+    sub_mark_ids = marking_params['sub_mark_ids']&.map(&:to_i) || []
 
-    relate_has_many(@number, Mark, target_ids - @number.mark_ids)
-    unrelate_has_many(@number, Mark, @number.mark_ids - target_ids)
+    relate_has_many(@number, Mark, add_mark_ids)
+    unrelate_has_many(@number, Mark, sub_mark_ids)
 
     redirect_to action: 'index'
   end
@@ -30,6 +30,6 @@ class MarkingsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def marking_params
-      params.require(:markings).permit(:mark_ids => [])
+      params.require(:markings).permit(:mark_ids => [], :add_mark_ids => [], :sub_mark_ids => [])
     end
 end
