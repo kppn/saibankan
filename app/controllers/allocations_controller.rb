@@ -13,7 +13,7 @@ class AllocationsController < ApplicationController
         format.json { render :show, status: :created, location: @allocation }
       else
         format.html { render :new }
-        format.json { render json: @allocation.errors, status: :unprocessable_entity }
+        format.json { render json: @allocation.errors, status: :bad_request }
       end
     end
   end
@@ -27,7 +27,7 @@ class AllocationsController < ApplicationController
         format.json { render :show, status: :ok, location: @allocation }
       else
         format.html { render :edit }
-        format.json { render json: @allocation.errors, status: :unprocessable_entity }
+        format.json { render json: @allocation.errors, status: :bad_request }
       end
     end
   end

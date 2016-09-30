@@ -12,14 +12,7 @@
 #
 
 class FixedPart < NumberPart
-  after_save :reset_current
-
   def build(binder)
     format
   end
-
-  private
-    def reset_current
-      update_column(:current, nil)
-    end
 end

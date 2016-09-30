@@ -1,5 +1,6 @@
 class Api::V1::NumbersController < Api::V1Controller
   before_action :set_project, only: [:create]
+  before_action :set_user, only: [:create]
   before_action :check_request, only: [:create]
 
   # 注意：後優先
@@ -13,20 +14,15 @@ class Api::V1::NumbersController < Api::V1Controller
   # POST /numbers.json
   def create
     Rails.logger.info ['API: number assignment requested', {request: request_loginfo}]
-    Rails.logger.debug number_params.class
-    Rails.logger.debug number_params.permitted?
 
-    @user = User.find_by!(email: number_params[:user])
+    affiliate_user_to_project_if_yet
 
-    @number = @project.numbers.build
-    @number.val = allocate_number(@project, @user)
-    @number.users << @user
-
+    @number = build_new_number
     if @number.save
-      marking(@number, @user, number_params[:mark]) if number_params[:mark]
+      marking_if_mark_requested number_params[:mark]
       render json: @number
     else
-      render json: @number.errors, status: :unprocessable_entity
+      render json: { message: @number.errors.values.join(' ') }.to_json, status: :bad_request
     end
   end
 
@@ -38,38 +34,13 @@ class Api::V1::NumbersController < Api::V1Controller
       params.permit(:format, :project_name, :user, :number => {}, :mark => [:label, :description])
     end
     
+
     def set_project
       @project = Project.find_by!(name: params[:project_name])
     end
 
-    def marking(number, user, mark_params)
-      return unless (mark_params || mark_params[:label])
-
-      mark = Mark.find_by(label: mark_params[:label], owner_id: user.id, owner_type: 'User')
-      unless mark
-        mark = Mark.new(mark_params)
-        mark.owner = user
-        mark.save
-      end
-      number.marks << mark
-    end
-
-    def create_mark
-    end
-
-    def allocate_number(project, user)
-      number_format = project.number_formats.first
-      number_format.build binding
-    end
-
-    def rescue_bad_request
-      Rails.logger.warn ['parameter error', params]
-      render(json: {message: $!.message}, status: 400) and return
-    end
-
-    def rescue_standard_error
-      Rails.logger.warn ['any error', params]
-      render(json: {message: $!.message}, status: 500) and return
+    def set_user
+      @user = User.find_by!(email: number_params[:user])
     end
 
     def check_request
@@ -79,6 +50,40 @@ class Api::V1::NumbersController < Api::V1Controller
       raise ActionController::BadRequest.new unless params[:user]
     end
 
+
+    # マークを付与する(登録されてなければ新しく作る)
+    def marking_if_mark_requested(mark_params)
+      return unless mark_params
+      return unless mark_params[:label]
+
+      mark = Mark.find_or_create_by(label: mark_params[:label], owner_id: @user.id, owner_type: 'User') do |mark|
+               mark.description = mark_params[:description]
+             end
+      @number.marks << mark
+    end
+
+    # 新しい番号を作成し関連付けする
+    def build_new_number
+      @project.numbers.build do |number|
+        number.val = allocate_number @project
+        number.users << @user
+      end
+    end
+
+    # 採番する
+    def allocate_number(project)
+      number_format = project.number_formats.first
+      number_format.build binding
+    end
+
+    # ユーザをプロジェクトに所属させる(まだ所属していなければ)
+    def affiliate_user_to_project_if_yet
+      unless @user.projects.include? @project
+        @user.projects << @project
+      end
+    end
+
+    # ログ用のリクエスト情報抜粋
     def request_loginfo
       {
         method:          request.method,
@@ -92,4 +97,15 @@ class Api::V1::NumbersController < Api::V1Controller
         body:            request.body.read,
       }
     end
+
+    def rescue_bad_request
+      Rails.logger.warn ['parameter error', params]
+      render(json: {message: $!.message}, status: 400) and return
+    end
+
+    def rescue_standard_error
+      Rails.logger.warn ['any error', params]
+      render(json: {message: $!.message}, status: 500) and return
+    end
+
 end

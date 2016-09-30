@@ -12,15 +12,13 @@
 #
 
 class SequentialPart < NumberPart
-  after_save :reset_current
-
   def build(binder)
     num = format % current
-    increment! :current
+    update_column :current, current+1
     num
   end
 
-  def reset_current
-    update_column(:current, 0) unless self.current
+  def reset_sti_child_columns
+    update_column(:current, 0)
   end
 end

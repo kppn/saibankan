@@ -1,6 +1,6 @@
 class NumbersController < ApplicationController
   before_action :set_number, only: []
-  before_action :set_project, only: [:index]
+  before_action :set_project, only: [:index, :create]
 
   # GET /numbers
   # GET /numbers.json
@@ -11,14 +11,14 @@ class NumbersController < ApplicationController
   # POST /numbers
   # POST /numbers.json
   def create
-    @project = Project.find(params[:project_id])
     @number = @project.numbers.build
 
-    @number.val = allocate_number(@project, @user)
+    @number.val = allocate_number @project
     @number.users << @user
 
     mark_ids = params[:number] && params[:number][:mark_ids] || []
     relate_has_many @number, Mark, mark_ids
+
 
     respond_to do |format|
       if @number.save
@@ -26,7 +26,7 @@ class NumbersController < ApplicationController
         format.json { render :show, status: :created, location: @number }
       else
         format.html { render :new }
-        format.json { render json: @number.errors, status: :unprocessable_entity }
+        format.json { render json: @number.errors, status: :bad_request }
       end
     end
   end
@@ -47,7 +47,7 @@ class NumbersController < ApplicationController
       params.require(:number).permit(:allocated, :project_id, :mark_ids)
     end
 
-    def allocate_number project, user
+    def allocate_number(project)
       number_format = project.number_formats.first
       number_format.build binding
     end

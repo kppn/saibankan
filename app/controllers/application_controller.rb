@@ -5,6 +5,9 @@ class ApplicationController < ActionController::Base
 
   before_action :logined_user, :project_name_tilte
 
+  rescue_from 'Exception' do |e|
+    render json: { message: e.message }.to_json, status: :internal_server_error
+  end
 
 
   private
@@ -20,12 +23,18 @@ class ApplicationController < ActionController::Base
       end
     end
 
+    # unrelate has_many association
     def unrelate_has_many(relatee, relation_model, ids)
       ids.each do |id|
         relatee.send(relation_model.table_name).delete relation_model.find(id)
       end
     end
 
+    # viewのヘッダーに表示する用のプロジェクト名を作成
+    # ProjectのRESTルーティングのidの形式差は吸収する
+    #   ProjectリソースへのRESTではid, その配下ではproject_id
+    #   e.g.)          project GET    /projects/:id(.:format)
+    #          project_numbers GET    /projects/:project_id/numbers(.:format)
     def project_name_tilte
       id = if self.kind_of? ProjectsController
              params[:id]

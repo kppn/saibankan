@@ -35,7 +35,7 @@ class MarksController < ApplicationController
         format.json { render :show, status: :created, location: @mark }
       else
         format.html { render :new }
-        format.json { render json: @mark.errors, status: :unprocessable_entity }
+        format.json { render json: @mark.errors, status: :bad_request}
       end
     end
   end
@@ -49,7 +49,7 @@ class MarksController < ApplicationController
         format.json { render :show, status: :ok, location: @mark }
       else
         format.html { render :edit }
-        format.json { render json: @mark.errors, status: :unprocessable_entity }
+        format.json { render json: @mark.errors, status: :bad_request}
       end
     end
   end

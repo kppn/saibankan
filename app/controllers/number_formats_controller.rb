@@ -25,16 +25,17 @@ class NumberFormatsController < ApplicationController
     @number_format = NumberFormat.new(number_format_params)
     @number_format.project = @project
 
+    params = number_format_params
+    blankize_empty_parts_params params[:number_parts_attributes]
+    render(:new) && return if many_sequential_parts?(params[:number_parts_attributes])
+
     respond_to do |format|
       if @number_format.save
-        Rails.logger.debug 'number_format create success'
         format.html { redirect_to project_path(@project) }
         format.json { render :show, status: :created, location: @number_format }
       else
-        Rails.logger.debug 'number_format create fails'
-        Rails.logger.debug @number_format.errors.messages
         format.html { render :new }
-        format.json { render json: @number_format.errors, status: :unprocessable_entity }
+        format.json { render json: @number_format.errors, status: :bad_request }
       end
     end
   end
@@ -42,24 +43,30 @@ class NumberFormatsController < ApplicationController
   # PATCH/PUT /number_formats/1
   # PATCH/PUT /number_formats/1.json
   def update
+    # params[:number_parts_attributes]
+    # => {
+    #      "0"=>{"format"=>"aaa", "type"=>"FixedPart", "id"=>"94"},
+    #      "1"=>{"format"=>"%Y%m", "type"=>"DatePart", "id"->"102"}, 
+    #      ...
+    
     params = number_format_params
-    regulate_empty_parts_params params[:number_parts_attributes]
+    blankize_empty_parts_params params[:number_parts_attributes]
+    render(:edit) && return if many_sequential_parts?(params[:number_parts_attributes])
 
     respond_to do |format|
-      if @number_format.update(params)
-        Rails.logger.debug 'update validation success'
+      inherit_continuance_attributes do
+        if @number_format.update(params)
+          # paramsのtypeを元に単にupdateでは, STIのクラスが変更されない(typeカラムも変わらない)
+          transform_parts_type @number_format.number_parts, params[:number_parts_attributes]
+          # 中途半端な状態になったNumberPartは初期化する
+          blankize_insufficiently @number_format.number_parts
 
-        # paramsのtypeを元に単にupdateでは, STIのクラスが変更されない(typeカラムも変わらない)
-        transform_parts_type @number_format.number_parts, params[:number_parts_attributes]
-        initialize_empty_parts @number_format.number_parts
-
-        format.html { redirect_to :action => 'edit' }
-        format.json { render :show, status: :ok, location: @number_format }
-      else
-        Rails.logger.debug 'update validation fails'
-
-        format.html { render :edit }
-        format.json { render json: @number_format.errors, status: :unprocessable_entity }
+          format.html { redirect_to :action => 'edit' }
+          format.json { render :show, status: :ok, location: @number_format }
+        else
+          format.html { render :edit }
+          format.json { render json: @number_format.errors, status: :bad_request }
+        end
       end
     end
   end
@@ -80,7 +87,8 @@ class NumberFormatsController < ApplicationController
       params.require(:number_format).permit(:project_id, number_parts_attributes: [:format, :type, :id])
     end
 
-    def regulate_empty_parts_params number_parts_params
+    # 中途半端なパラメータは全て空にする
+    def blankize_empty_parts_params number_parts_params
       number_parts_params.each do |key, val|
         if val[:format].empty? || val[:type].nil? || val[:type].empty?
           val[:format] = ''
@@ -89,18 +97,18 @@ class NumberFormatsController < ApplicationController
       end
     end
 
+    # パラメータでNumberPartのtypeが指定されていれば、そのNumberPartのtypeを変更
     def transform_parts_type number_parts, number_parts_params
       id_based_hash = to_id_based_hash number_parts_params
       number_parts.each do |number_part|
-        if type = id_based_hash[number_part.id][:type]
-          number_part.update_column(:type, type)
-          type_updated_number_part = number_part.becomes!(type.constantize)
-          # モデルのsaveコールバックを発生させる
-          type_updated_number_part.save
+        type = id_based_hash[number_part.id][:type]
+        if type
+          transform number_part, type.constantize
         end
       end
     end
 
+    # paramsハッシュの形式を変更
     # "0"=>{"format"=>"aaa", "type"=>"FixedPart", "id"=>"94"}, ...
     #=> 94 => {"format"=>"aaa", "type"=>"FixedPart", "id"=>"94"}, ...
     def to_id_based_hash number_parts_params
@@ -111,13 +119,40 @@ class NumberFormatsController < ApplicationController
       id_based_hash
     end
 
-    def initialize_empty_parts number_parts
+    # STI:modelのtypeを変える(クラスも変更)
+    #
+    # #<Hoge: id: 2, type: "Hoge", ...
+    #=> #<Fuga: id: 2, type: "Fuga", ..
+    def transform model, type
+      model.update_column(:type, type.to_s)
+      type_updated = model.becomes!(type)
+      # モデルのsaveコールバックを発生させる
+      type_updated.save
+    end
+
+    # 中途半端な状態のNumberPart(formatが空だがtypeがある)を初期化(全て空)する
+    def blankize_insufficiently number_parts
       number_parts.each do |number_part|
-        Rails.logger.debug 'initialize_empty_parts #{number_part.format}'
         if number_part.format.blank? && number_part.type.present?
-          Rails.logger.debug 'initialize_empty_parts type deletion #{number_part.type}'
-          number_part.update_column(:type, nil)
+          number_part.reset
         end
+      end
+    end
+
+    # 永続的なアトリビュートをupdate(STIタイプ変更)前後で引き継ぐ
+    def inherit_continuance_attributes
+      current = @number_format.number_parts.find_by(type: 'SequentialPart')&.current
+
+      yield if block_given?
+
+      new_seq_part = @number_format.number_parts.find_by(type: 'SequentialPart')
+      new_seq_part&.update_column(:current, current)
+    end
+
+    # paramsに複数のSequentialPartsを含むか
+    def many_sequential_parts? params
+      params.values.many? do |h|
+        h[:type] == 'SequentialPart'
       end
     end
 end

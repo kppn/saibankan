@@ -17,5 +17,6 @@ class Project < ActiveRecord::Base
   has_many :marks, as: :owner
   accepts_nested_attributes_for :marks
 
-  validates :name, presence: true
+  validates_with ProjectValidator
+
 end

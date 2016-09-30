@@ -12,7 +12,8 @@ module Saibankan
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
     config.autoload_paths += Dir["#{config.root}/app/lib/"]
-    config.autoload_paths += Dir["#{config.root}/app/decorator/"]
+    config.autoload_paths += Dir["#{config.root}/app/decorators/"]
+    config.autoload_paths += Dir["#{config.root}/app/validators/"]
 
     # Allow Web-console from anywhere
     config.web_console.whitelisted_ips = %w(0.0.0.0/0 ::0) 

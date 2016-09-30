@@ -12,14 +12,7 @@
 #
 
 class DatePart < NumberPart
-  after_save :reset_current
-
   def build(binder)
     Time.zone.now.strftime format
   end
-
-  private
-    def reset_current
-      update_column(:current, nil)
-    end
 end

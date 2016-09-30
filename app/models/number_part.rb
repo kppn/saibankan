@@ -16,6 +16,8 @@ class NumberPart < ActiveRecord::Base
 
   attr_accessor :type
 
+  after_save :reset_sti_child_columns
+
   def build(binder)
     ''
   end
@@ -23,4 +25,18 @@ class NumberPart < ActiveRecord::Base
   def type
     read_attribute(:type)
   end
+
+  def reset
+    reset_sti
+    reset_sti_child_columns
+  end
+
+  private
+    def reset_sti
+      update_columns(format: '', type: nil)
+    end
+
+    def reset_sti_child_columns
+      update_column(:current, nil)
+    end
 end

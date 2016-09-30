@@ -17,6 +17,5 @@ class Mark < ActiveRecord::Base
 
   belongs_to :owner, polymorphic: true
 
-  validates :label, presence: true
-
+  validates_with MarkValidator
 end

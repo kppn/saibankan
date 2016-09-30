@@ -16,5 +16,5 @@ class Number < ActiveRecord::Base
   has_many :markings, dependent: :destroy
   has_many :marks, through: :markings
 
-  validates :val, :project_id, presence: true
+  validates_with NumberValidator
 end
