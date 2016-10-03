@@ -56,7 +56,7 @@ class NumberFormatsController < ApplicationController
     respond_to do |format|
       inherit_continuance_attributes do
         if @number_format.update(params)
-          # paramsのtypeを元に単にupdateでは, STIのクラスが変更されない(typeカラムも変わらない)
+          # STIのtype(クラス)を変更
           transform_parts_type @number_format.number_parts, params[:number_parts_attributes]
           # 中途半端な状態になったNumberPartは初期化する
           blankize_insufficiently @number_format.number_parts
