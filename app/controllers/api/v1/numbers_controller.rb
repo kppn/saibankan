@@ -99,11 +99,13 @@ class Api::V1::NumbersController < Api::V1Controller
     end
 
     def rescue_bad_request
+      Rails.logger.warn $!
       Rails.logger.warn ['parameter error', params]
       render(json: {message: $!.message}, status: 400) and return
     end
 
     def rescue_standard_error
+      Rails.logger.warn $!
       Rails.logger.warn ['any error', params]
       render(json: {message: $!.message}, status: 500) and return
     end

@@ -1,0 +1,4 @@
+SERVER_IP 10.0.1.222
+SERVER_PORT 61224
+PROJECT_NAME popa
+USER_EMAIL ta_kondoh@actis.co.jp

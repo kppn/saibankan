@@ -39,6 +39,8 @@ Rails.application.configure do
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
   
+  # Allow Web-console from anywhere
+  config.web_console.whitelisted_ips = %w(0.0.0.0/0 ::0)
 
   # ------- quiet_assets
   config.assets.quiet = true
