@@ -11,5 +11,5 @@
 
 class Allocation < ActiveRecord::Base
   belongs_to :user
-  belongs_to :number, dependent: :destroy
+  belongs_to :number
 end
